@@ -4,13 +4,12 @@ import * as net from "net";
 console.log("Logs from your program will appear here!");
 
 // Uncomment this to pass the first stage
-const server = net.createServer((socket) => {
+const server = net.createServer((socket, a) => {
+    console.log(socket, a);
   socket.write(Buffer.from(`HTTP/1.1 200 OK\r\n\r\n`));
   socket.on("close", () => {
     socket.end();
   });
 });
-
-console.log('testing');
 
 server.listen(4221, "localhost");
