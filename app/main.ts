@@ -10,6 +10,10 @@ const server = net.createServer((socket) => {
 
     socket.on("connectionAttemptFailed", () => {
         console.log('failed', arguments);
+        socket.write(Buffer.from(`HTTP/1.1 400 OK\r\n\r\n`));
+    });
+
+    socket.on("connect", () => {        
         socket.write(Buffer.from(`HTTP/1.1 200 OK\r\n\r\n`));
     });
 
