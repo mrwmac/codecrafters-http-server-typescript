@@ -10,9 +10,14 @@ const server = net.createServer((socket) => {
         // console.log(data.toString().split('\r\n'));
         const path = data.toString().split('\r\n')[0].split(' ')[1];//not an ounce of reilience here
 
-        console.log(path);        
-
-        // socket.write(Buffer.from(`HTTP/1.1 200 OK\r\n\r\n`));
+        if(path == '/')
+        {
+            socket.write(Buffer.from(`HTTP/1.1 200 OK\r\n\r\n`));
+        }
+        else
+        {
+            socket.write(Buffer.from(`HTTP/1.1 400 NOT OK\r\n\r\n`));
+        }
     });
 
   socket.on("close", () => {
