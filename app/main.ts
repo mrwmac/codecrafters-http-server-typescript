@@ -7,7 +7,10 @@ console.log("Logs from your program will appear here!");
 const server = net.createServer((socket) => {
 
     socket.on("data", (data) => {        
-        console.log(data.toString().split('\r\n'));
+        // console.log(data.toString().split('\r\n'));
+        const path = data.toString().split('\r\n')[1]
+
+        console.log(path);
 
         // socket.write(Buffer.from(`HTTP/1.1 200 OK\r\n\r\n`));
     });
