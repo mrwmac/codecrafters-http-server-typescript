@@ -5,16 +5,10 @@ console.log("Logs from your program will appear here!");
 
 // Uncomment this to pass the first stage
 const server = net.createServer((socket) => {
-    
-  
 
-    socket.on("connectionAttemptFailed", () => {
-        console.log('failed', arguments);
-        socket.write(Buffer.from(`HTTP/1.1 400 OK\r\n\r\n`));
-    });
-
-    socket.on("connect", () => {        
-        socket.write(Buffer.from(`HTTP/1.1 200 OK\r\n\r\n`));
+    socket.on("data", (data) => {        
+        console.log(data);
+        // socket.write(Buffer.from(`HTTP/1.1 200 OK\r\n\r\n`));
     });
 
   socket.on("close", () => {
