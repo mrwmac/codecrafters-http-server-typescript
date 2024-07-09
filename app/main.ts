@@ -8,7 +8,7 @@ const server = net.createServer((socket) => {
 
     socket.on("data", (data) => {        
         // console.log(data.toString().split('\r\n'));
-        const path = data.toString().split('\r\n')[0].split(' ');//not an ounce of reilience here
+        const path = data.toString().split('\r\n')[0].split(' ')[1];//not an ounce of reilience here
 
         console.log(path);        
 
