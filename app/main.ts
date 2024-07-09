@@ -16,7 +16,7 @@ const server = net.createServer((socket) => {
         }
         else
         {
-            socket.write(Buffer.from(`HTTP/1.1 404 NOT OK\r\n\r\n`));
+            socket.write(Buffer.from(`HTTP/1.1 404 NOT Found\r\n\r\n`));
         }
     });
 
