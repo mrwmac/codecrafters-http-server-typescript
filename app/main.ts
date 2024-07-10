@@ -11,12 +11,12 @@ const server = net.createServer((socket) => {
         const params = data.toString().split('\r\n');
         const req_line = params[0].split(' ');
         const path = req_line[1]; 
-console.log(path);
+console.log(path, );
         if(path == '/')
         {
             socket.write(Buffer.from(`HTTP/1.1 200 OK\r\n\r\n`));
         }
-        else if(/^echo\//.test(path))
+        else if(/^\/echo\//.test(path))
         {
           const endpoint = path.split('/')[2];
           
