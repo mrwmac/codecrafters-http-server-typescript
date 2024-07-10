@@ -8,11 +8,20 @@ const server = net.createServer((socket) => {
 
     socket.on("data", (data) => {        
         // console.log(data.toString().split('\r\n'));
-        const path = data.toString().split('\r\n')[0].split(' ')[1];//not an ounce of reilience here
+        const params = data.toString().split('\r\n');
+        const req_line = params[0].split(' ');
+        const path = req_line[1]; 
 
         if(path == '/')
         {
             socket.write(Buffer.from(`HTTP/1.1 200 OK\r\n\r\n`));
+        }
+        else if(/^echo\//.test(path))
+        {
+          const endpoint = path.split('/')[2];
+          
+          // socket.write(Buffer.from(`HTTP/1.1 200 OK\r\n\r\n`));
+          socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${endpoint.length}\r\n\r\n${endpoint}`));
         }
         else
         {
