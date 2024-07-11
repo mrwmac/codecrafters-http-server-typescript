@@ -11,9 +11,7 @@ const server = net.createServer((socket) => {
 
         const params = getParams(data);
         const[req_line, path] = getRquestLine(params);
-        const[host, user_agent] = getHeaders(params);
-
-        console.log(user_agent);
+        const[host, user_agent] = getHeaders(params);        
 
         if(path == '/')
         {
@@ -28,7 +26,8 @@ const server = net.createServer((socket) => {
         }
         else if(path == '/user-agent')
         {
-          // socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${endpoint.length}\r\n\r\n${endpoint}`));
+          
+          socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${user_agent[1].length}\r\n\r\n${user_agent[1]}`));
         }
         else
         {
