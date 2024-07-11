@@ -39,7 +39,7 @@ const server = net.createServer((socket) => {
 });
 
 function getRquestLine(data)
-{console.log(data);
+{console.log(data.toString());
   const params = data.toString().split('\r\n');
   const req_line = params[0].split(' ');
   const path = req_line[1];
