@@ -9,10 +9,8 @@ const server = net.createServer((socket) => {
         // const req_line = params[0].split(' ');
         // const path = req_line[1]; 
 
-        const[params, req_line, path] = getRquestLine(data);
-
-        console.log('printing')
-        console.log(params, req_line, path);
+        const[params, req_line, path] = getRquestLine(data);        
+        
 
         if(path == '/')
         {
@@ -41,15 +39,18 @@ const server = net.createServer((socket) => {
 });
 
 function getRquestLine(data)
-{
-      const params = data.toString().split('\r\n');
-      const req_line = params[0].split(' ');
-      const path = req_line[1];
+{console.log(data);
+  const params = data.toString().split('\r\n');
+  const req_line = params[0].split(' ');
+  const path = req_line[1];
 
-      return [params, req_line, path];
+  return [params, req_line, path];
 }
 
-function getHeaders(data){
+function getHeaders(data)
+{
+  const 
+
 
 }
 
