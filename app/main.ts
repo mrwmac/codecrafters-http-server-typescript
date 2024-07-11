@@ -11,7 +11,7 @@ const server = net.createServer((socket) => {
 
         const params = getParams(data);
         const[req_line, path] = getRquestLine(params);
-        const[host, user_agent]getHeaders(params);
+        const[host, user_agent] = getHeaders(params);
 
         console.log(user_agent);
 
