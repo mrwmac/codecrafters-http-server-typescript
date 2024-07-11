@@ -1,17 +1,19 @@
 import * as net from "net";
 
-// You can use print statements as follows for debugging, they'll be visible when running tests.
-console.log("Logs from your program will appear here!");
-
 // Uncomment this to pass the first stage
 const server = net.createServer((socket) => {
 
     socket.on("data", (data) => {        
-        // console.log(data.toString().split('\r\n'));
-        const params = data.toString().split('\r\n');
-        const req_line = params[0].split(' ');
-        const path = req_line[1]; 
-console.log(path, );
+        // // console.log(data.toString().split('\r\n'));
+        // const params = data.toString().split('\r\n');
+        // const req_line = params[0].split(' ');
+        // const path = req_line[1]; 
+
+        const[params, req_line, path] = getRquestLine(data);
+
+        console.log('printing')
+        console.log(params, req_line, path);
+
         if(path == '/')
         {
             socket.write(Buffer.from(`HTTP/1.1 200 OK\r\n\r\n`));
@@ -23,6 +25,10 @@ console.log(path, );
           // socket.write(Buffer.from(`HTTP/1.1 200 OK\r\n\r\n`));
           socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${endpoint.length}\r\n\r\n${endpoint}`));
         }
+        else if(path == '/user-agent')
+        {
+          // socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${endpoint.length}\r\n\r\n${endpoint}`));
+        }
         else
         {
             socket.write(Buffer.from(`HTTP/1.1 404 Not Found\r\n\r\n`));
@@ -33,5 +39,18 @@ console.log(path, );
     socket.end();
   });
 });
+
+function getRquestLine(data)
+{
+      const params = data.toString().split('\r\n');
+      const req_line = params[0].split(' ');
+      const path = req_line[1];
+
+      return [params, req_line, path];
+}
+
+function getHeaders(data){
+
+}
 
 server.listen(4221, "localhost");
