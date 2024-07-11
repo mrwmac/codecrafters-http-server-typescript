@@ -11,7 +11,9 @@ const server = net.createServer((socket) => {
 
         const params = getParams(data);
         const[req_line, path] = getRquestLine(params);
-        getHeaders(params);
+        const[host, user_agent]getHeaders(params);
+
+        console.log(user_agent);
 
         if(path == '/')
         {
@@ -54,9 +56,11 @@ function getRquestLine(params)
 
 function getHeaders(params)
 {
-  console.log(params[1]);
-  console.log('------');
-  console.log(params[2])
+
+  const host = params[1].split(' ');
+  const user_agent = params[2].split(' ');
+  
+  return [host, user_agent];
 }
 
 
