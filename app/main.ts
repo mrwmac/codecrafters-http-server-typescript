@@ -31,12 +31,16 @@ const server = net.createServer((socket) => {
         }
         else if(/^\/files\//.test(path))
         {
-          const endpoint = path.split('/')[2];
+          const endpoint = path.split('/')[2]; console.log(endpoint)
 
-          const reader = new FileReader();
-
-          
-          console.log(path, reader.readAsDataURL(path));
+          const fs = require('node:fs');
+          fs.readFile(path, 'utf8', (err, data) => {
+            if (err) {
+              socket.write(Buffer.from(`HTTP/1.1 404 Not Found\r\n\r\n`));
+              return;
+            }
+            socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${endpoint.length}\r\n\r\n${endpoint}`));
+          });          
         }
         else
         {
