@@ -12,7 +12,7 @@ const server = net.createServer((socket) => {
         const params = getParams(data);
         const[req_line, path] = getRquestLine(params);
         const[host, user_agent] = getHeaders(params);        
-
+// console.log(path);console.log(/^\/files\//.test(path));
         if(path == '/')
         {
             socket.write(Buffer.from(`HTTP/1.1 200 OK\r\n\r\n`));
@@ -29,18 +29,21 @@ const server = net.createServer((socket) => {
           socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${user_agent[1].length}\r\n\r\n${user_agent[1]}`));
         }
         else if(/^\/files\//.test(path))
-        {
+        {        
           const endpoint = path.split('/')[2];
+          const dirName = getDir(); console.log(dirName)
 
-          const fs = require('node:fs');
-          fs.readFile(path, 'utf8', (err, fdata) => {            
-            if (err) {
-              console.log(endpoint, err)
-              socket.write(Buffer.from(`HTTP/1.1 404 Not Found\r\n\r\n`));
-              return;
-            }
-            socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${endpoint.length}\r\n\r\n${endpoint}`));
-          });          
+          if(dirName)
+          {
+            const fs = require('node:fs'); // pretty ugly to be fair
+            fs.readFile(dirName + '/' + endpoint, 'utf8', (err, fdata) => {            
+              if (err) {              
+                socket.write(Buffer.from(`HTTP/1.1 404 Not Found\r\n\r\n`));
+                return;
+              }
+              socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${endpoint.length}\r\n\r\n${endpoint}`));
+            });
+          }         
         }
         else
         {
@@ -75,5 +78,14 @@ function getHeaders(params)
   return [host, user_agent];
 }
 
-console.log('here');
+function getDir()
+{
+  if(process && process.argv)
+  {
+    return process.argv[process.argv.indexOf('--directory') + 1]
+  }
+
+  return false;
+}
+
 server.listen(4221, "localhost");
