@@ -33,10 +33,9 @@ const server = net.createServer((socket) => {
           const endpoint = path.split('/')[2];
 
           const fs = require('node:fs');
-          fs.readFile(path, 'utf8', (err, fdata) => {
-
-            console.log(fdata, err)
+          fs.readFile(path, 'utf8', (err, fdata) => {            
             if (err) {
+              console.log(fdata, err)
               socket.write(Buffer.from(`HTTP/1.1 404 Not Found\r\n\r\n`));
               return;
             }
