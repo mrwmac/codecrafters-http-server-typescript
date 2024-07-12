@@ -25,16 +25,17 @@ const server = net.createServer((socket) => {
           socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${endpoint.length}\r\n\r\n${endpoint}`));
         }
         else if(path == '/user-agent')
-        {
-          
+        {          
           socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${user_agent[1].length}\r\n\r\n${user_agent[1]}`));
         }
         else if(/^\/files\//.test(path))
         {
-          const endpoint = path.split('/')[2]; console.log(endpoint)
+          const endpoint = path.split('/')[2];
 
           const fs = require('node:fs');
-          fs.readFile(path, 'utf8', (err, data) => {
+          fs.readFile(path, 'utf8', (err, fdata) => {
+
+            console.log(fdata, err)
             if (err) {
               socket.write(Buffer.from(`HTTP/1.1 404 Not Found\r\n\r\n`));
               return;
