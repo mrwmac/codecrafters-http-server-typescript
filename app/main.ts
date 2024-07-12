@@ -29,7 +29,7 @@ const server = net.createServer((socket) => {
           
           socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${user_agent[1].length}\r\n\r\n${user_agent[1]}`));
         }
-        else if(/^\/files\//.test(path)))
+        else if(/^\/files\//.test(path))
         {
           const endpoint = path.split('/')[2];
 
