@@ -35,7 +35,7 @@ const server = net.createServer((socket) => {
           const fs = require('node:fs');
           fs.readFile(path, 'utf8', (err, fdata) => {            
             if (err) {
-              console.log(fdata, err)
+              console.log(endpoint, err)
               socket.write(Buffer.from(`HTTP/1.1 404 Not Found\r\n\r\n`));
               return;
             }
@@ -75,5 +75,5 @@ function getHeaders(params)
   return [host, user_agent];
 }
 
-
+console.log('here');
 server.listen(4221, "localhost");
