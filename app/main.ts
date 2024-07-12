@@ -29,6 +29,15 @@ const server = net.createServer((socket) => {
           
           socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${user_agent[1].length}\r\n\r\n${user_agent[1]}`));
         }
+        else if(/^\/files\//.test(path)))
+        {
+          const endpoint = path.split('/')[2];
+
+          const reader = new FileReader();
+
+          
+          console.log(path, reader.readAsDataURL(path));
+        }
         else
         {
             socket.write(Buffer.from(`HTTP/1.1 404 Not Found\r\n\r\n`));
