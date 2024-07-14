@@ -31,7 +31,7 @@ const server = net.createServer((socket) => {
         else if(/^\/files\//.test(path))
         {        
           const endpoint = path.split('/')[2];
-          const dirName = getDir(); console.log(dirName)
+          const dirName = getDir();
 
           if(dirName)
           {
@@ -40,8 +40,9 @@ const server = net.createServer((socket) => {
               if (err) {              
                 socket.write(Buffer.from(`HTTP/1.1 404 Not Found\r\n\r\n`));
                 return;
-              }
-              socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${endpoint.length}\r\n\r\n${endpoint}`));
+              }             
+
+              socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${fdata.length}\r\n\r\n${endpoint}`));
             });
           }         
         }
