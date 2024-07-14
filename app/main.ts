@@ -9,9 +9,10 @@ const server = net.createServer((socket) => {
         // const req_line = params[0].split(' ');
         // const path = req_line[1]; 
 
-        const params = getParams(data);
+        const params = getParams(data); console.log(params);
         const[req_line, path] = getRquestLine(params);
-        const[host, user_agent] = getHeaders(params);        
+        const[host, user_agent] = getHeaders(params);     
+        const body = getBody(params);
 // console.log(path);console.log(/^\/files\//.test(path));
         if(path == '/')
         {
@@ -40,10 +41,7 @@ const server = net.createServer((socket) => {
               if (err) {              
                 socket.write(Buffer.from(`HTTP/1.1 404 Not Found\r\n\r\n`));
                 return;
-              }             
-
-              console.log(data, fdata);
-
+              }
               socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${fdata.length}\r\n\r\n${fdata}`));
             });
           }         
@@ -79,6 +77,13 @@ function getHeaders(params)
   const user_agent = params[2].split(' ');
   
   return [host, user_agent];
+}
+
+function getBody(params)
+{ 
+  const body = params.split('\r\n')[1]; console.log(params, params.split('\r\n');
+  
+  return body;
 }
 
 function getDir()
