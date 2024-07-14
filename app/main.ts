@@ -42,7 +42,9 @@ const server = net.createServer((socket) => {
                 return;
               }             
 
-              socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${fdata.length}\r\n\r\n${endpoint}`));
+              console.log(data, fdata);
+
+              socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${fdata.length}\r\n\r\n${fdata}`));
             });
           }         
         }
