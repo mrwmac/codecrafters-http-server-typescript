@@ -12,9 +12,9 @@ const server = net.createServer((socket) => {
         const request_details = getParams(data);
         const action = request_details.action;
         const path = request_details.url;
-        const user_agent = request_details.user_agent;
-        const body = request_details.body;
+        const user_agent = request_details.user_agent;        
         const encoding = getEncodings(request_details.encodings);
+        const body = request_details.body;
 
         // const[req_line, path] = getRquestLine(params);
         // const[host, user_agent] = getHeaders(params);
@@ -60,7 +60,9 @@ const server = net.createServer((socket) => {
                   socket.write(Buffer.from(`HTTP/1.1 404 Not Found\r\n\r\n`));
                   return;
                 }              
-                socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\n${encoding}Content-Length: ${fdata.length}\r\n\r\n${fdata}`));
+
+                const output = processData(fdata, encoding);
+                socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\n${encoding}Content-Length: ${output.length}\r\n\r\n${output}`));
               });
             }
           }         
@@ -143,6 +145,21 @@ function getEncodings(encodings)
     }
   }
   return '';
+}
+
+function processData(data, compress)
+{
+  if(!compress)
+  {
+    return data;
+  }
+    
+  const { gzipSync } = require('node:zlib');
+
+  const buffer = Buffer.from(data, 'utf8');
+  const zipped = gzipSync(buffer);
+
+  return zipped;
 }
 
 //will be able to accommodate all valid comperessions
