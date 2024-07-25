@@ -9,10 +9,15 @@ const server = net.createServer((socket) => {
         // const req_line = params[0].split(' ');
         // const path = req_line[1]; 
 
-        const params = getParams(data); console.log(params);
-        const[req_line, path] = getRquestLine(params);
-        const[host, user_agent] = getHeaders(params);     
-        const body = getBody(params);
+        const request_details = getParams(data);
+        const action = request_details.action;
+        const path = request_details.url;
+        const user_agent = request_details.user_agent;
+        const body = request_details.body;
+
+        // const[req_line, path] = getRquestLine(params);
+        // const[host, user_agent] = getHeaders(params);     
+        // const body = getBody(params);
 // console.log(path);console.log(/^\/files\//.test(path));
         if(path == '/')
         {
@@ -32,18 +37,34 @@ const server = net.createServer((socket) => {
         else if(/^\/files\//.test(path))
         {        
           const endpoint = path.split('/')[2];
-          const dirName = getDir();
+          const [dirName, dataToWrite] = getArgs();                    
 
           if(dirName)
           {
             const fs = require('node:fs'); // pretty ugly to be fair
-            fs.readFile(dirName + '/' + endpoint, 'utf8', (err, fdata) => {            
-              if (err) {              
-                socket.write(Buffer.from(`HTTP/1.1 404 Not Found\r\n\r\n`));
-                return;
+
+
+            if(action == 'POST')
+              {
+                fs.writeFile(dirName + endpoint, body, 'utf8', (err, fdata) => {            
+                  if (err) {              
+                    socket.write(Buffer.from(`HTTP/1.1 404 Not Found\r\n\r\n`));
+                    return;
+                  }              
+                  socket.write(Buffer.from(`HTTP/1.1 201 Created\r\n\r\n`));
+                });
               }
-              socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${fdata.length}\r\n\r\n${fdata}`));
-            });
+              else if(action == 'GET')
+              {
+                fs.readFile(dirName + endpoint, 'utf8', (err, fdata) => {            
+                  if (err) {              
+                    socket.write(Buffer.from(`HTTP/1.1 404 Not Found\r\n\r\n`));
+                    return;
+                  }              
+                  socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${fdata.length}\r\n\r\n${fdata}`));
+                });
+              }
+
           }         
         }
         else
@@ -59,41 +80,53 @@ const server = net.createServer((socket) => {
 
 function getParams(data)
 {
-  return data.toString().split('\r\n');
+  const params = data.toString().split('\r\n');
+  let request_details = {};
+
+  params.forEach( (element, index)  => { 
+      if(/^GET |^POST /.test(element))
+      {
+        
+        const request_line = element.split(' ');
+        request_details['action'] = request_line[0];
+        request_details['url'] = request_line[1];
+        request_details['protocol'] = request_line[2];
+      }
+      else if(/^Host: /.test(element))
+      {        
+        request_details['host'] = element.split(' ')[1];       
+      } 
+      else if(/^User-Agent: /.test(element))
+      {        
+        request_details['user_agent'] = element.split(' ')[1];
+      } 
+      else if(/^Accept: /.test(element))
+      {        
+        request_details['accept'] = element.split(' ')[1];
+      } 
+      //else if(/\r\n/.test(element))
+      else if(!element)
+      {
+        request_details['body'] = params[index+1];
+      }
+  });
+
+  return request_details;
 }
 
-function getRquestLine(params)
+function getArgs()
 {  
-  const req_line = params[0].split(' ');
-  const path = req_line[1];
-
-  return [req_line, path];
-}
-
-function getHeaders(params)
-{
-
-  const host = params[1].split(' ');
-  const user_agent = params[2].split(' ');
-  
-  return [host, user_agent];
-}
-
-function getBody(params)
-{ 
-  const body = params.split('\r\n')[1]; console.log(params, params.split('\r\n');
-  
-  return body;
-}
-
-function getDir()
-{
   if(process && process.argv)
   {
-    return process.argv[process.argv.indexOf('--directory') + 1]
+    return [process.argv[process.argv.indexOf('--directory') + 1],  process.argv[process.argv.indexOf('--data') + 1]];
   }
 
   return false;
+}
+
+function isData()
+{
+  return
 }
 
 server.listen(4221, "localhost");
