@@ -135,11 +135,11 @@ function getEncodings(encodings)
     return '';
   }  
 
-  const accepted =  encodings.split(',').filter(encoding => {
+  const accepted = encodings.split(',').filter(encoding => {
     return encoding_types.includes(encoding);
   });
 
-  return accepted && accepted.length > 0 ? `Content-Encoding: ${accepted.join(',')}\r\n` : '';
+  return accepted && accepted.length > 0 ? `Content-Encoding: ${accepted[0]}\r\n` : '';
 }
 
 //will be able to accommodate all valid comperessions
