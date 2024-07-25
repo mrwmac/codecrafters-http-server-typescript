@@ -31,7 +31,7 @@ const server = net.createServer((socket) => {
           const output = processData(endpoint, encoding);
           
           // socket.write(Buffer.from(`HTTP/1.1 200 OK\r\n\r\n`));
-          socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n${output}Content-Length: ${output.length}\r\n\r\n${output}`));
+          socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n${encoding}Content-Length: ${output.length}\r\n\r\n${output}`));
         }
         else if(path == '/user-agent')
         {
