@@ -14,7 +14,7 @@ const server = net.createServer((socket) => {
         const path = request_details.url;
         const user_agent = request_details.user_agent;
         const body = request_details.body;
-        const encoding = getEncodings(request_details.encodings);        
+        const encoding = getEncodings(request_details.encodings);
 
         // const[req_line, path] = getRquestLine(params);
         // const[host, user_agent] = getHeaders(params);
@@ -134,12 +134,15 @@ function getEncodings(encodings)
   {
     return '';
   }
-  
-  const accepted = encodings.split(',').filter(encoding => {    
-    return encoding_types.includes(encoding);
-  });
-// console.log(accepted);
-  return accepted && accepted.length > 0 ? `Content-Encoding: ${accepted[0]}\r\n` : '';
+
+  for(let i=0; i<encodings.length; i++)
+  {
+    if(encoding_types.includes(encodings[i].replace(',','')))
+    {
+      return `Content-Encoding: ${encodings[i].replace(',','')}\r\n`;
+    }
+  }
+  return '';
 }
 
 //will be able to accommodate all valid comperessions
