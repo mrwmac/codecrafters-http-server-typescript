@@ -38,7 +38,7 @@ const server = net.createServer((socket) => {
         {        
           const endpoint = path.split('/')[2];
           const [dirName, dataToWrite] = getArgs();                    
-
+console.log('action', action, 'files', dirName, 'data', dataToWrite);
           if(dirName)
           {
             const fs = require('node:fs'); // pretty ugly to be fair
