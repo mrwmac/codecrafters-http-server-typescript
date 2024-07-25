@@ -85,8 +85,7 @@ function getParams(data)
 
   params.forEach( (element, index)  => { 
       if(/^GET |^POST /.test(element))
-      {
-        
+      {        
         const request_line = element.split(' ');
         request_details['action'] = request_line[0];
         request_details['url'] = request_line[1];
@@ -104,11 +103,15 @@ function getParams(data)
       {        
         request_details['accept'] = element.split(' ')[1];
       } 
-      else if(/\r\n/.test(element))
-      // else if(!element)
+      // else if(/\r\n/.test(element))
+      else if(!element)
       {
         console.log('EMPTTTY', element);
-        request_details['body'] = params[index+1];
+        if(params[index+1])
+        {
+          request_details['body'] = params[index+1];
+          continue;
+        }
       }
   });
 
