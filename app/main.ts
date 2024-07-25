@@ -31,7 +31,7 @@ const server = net.createServer((socket) => {
           socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${endpoint.length}\r\n\r\n${endpoint}`));
         }
         else if(path == '/user-agent')
-        {          
+        {          console.log('user agent', user_agent)
           socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${user_agent[1].length}\r\n\r\n${user_agent[1]}`));
         }
         else if(/^\/files\//.test(path))
