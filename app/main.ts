@@ -28,12 +28,11 @@ const server = net.createServer((socket) => {
         {
           const endpoint = path.split('/')[2];
 
-          const output = processData(endpoint, encoding); console.log(output.toString());
+          const output = processData(endpoint, encoding); console.log(output); console.log(endpoint)
           
           // socket.write(Buffer.from(`HTTP/1.1 200 OK\r\n\r\n`));
           socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n${encoding}Content-Length: ${output.length}\r\n\r\n`));
-
-          socket.write(Buffer.from(`${output}`));
+          socket.write(output);
         }
         else if(path == '/user-agent')
         {
