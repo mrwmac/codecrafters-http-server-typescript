@@ -104,8 +104,8 @@ function getParams(data)
       {        
         request_details['accept'] = element.split(' ')[1];
       } 
-      //else if(/\r\n/.test(element))
-      else if(!element)
+      else if(/\r\n/.test(element))
+      // else if(!element)
       {
         console.log('EMPTTTY', element);
         request_details['body'] = params[index+1];
