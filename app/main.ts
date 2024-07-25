@@ -28,7 +28,7 @@ const server = net.createServer((socket) => {
         {
           const endpoint = path.split('/')[2];
 
-          const output = processData(endpoint, encoding);
+          const output = processData(endpoint, encoding); console.log(output.toString());
           
           // socket.write(Buffer.from(`HTTP/1.1 200 OK\r\n\r\n`));
           socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n${encoding}Content-Length: ${output.length}\r\n\r\n${output}`));
@@ -161,7 +161,7 @@ function processData(data, compress)
   const buffer = Buffer.from(data, 'utf8');
   const zipped = gzipSync(buffer);
 
-  return zipped;
+  return zipped.toString();
 }
 
 //will be able to accommodate all valid comperessions
