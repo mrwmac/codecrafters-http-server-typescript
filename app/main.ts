@@ -103,7 +103,7 @@ function getParams(data)
       }
       else if(/^Accept-Encoding: /.test(element))
       {
-        request_details['encodings'] = element.split(' ')[1];
+        request_details['encodings'] = element.split(' ');
       }
     // else if(/\r\n/.test(element))
       else if(!element)
@@ -133,12 +133,12 @@ function getEncodings(encodings)
   if(!encodings)
   {
     return '';
-  }  
-
-  const accepted = encodings.split(',').filter(encoding => {
+  }
+  
+  const accepted = encodings.split(',').filter(encoding => {    
     return encoding_types.includes(encoding);
   });
-
+// console.log(accepted);
   return accepted && accepted.length > 0 ? `Content-Encoding: ${accepted[0]}\r\n` : '';
 }
 
