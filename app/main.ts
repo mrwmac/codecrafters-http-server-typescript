@@ -106,11 +106,12 @@ function getParams(data)
       // else if(/\r\n/.test(element))
       else if(!element)
       {
-        console.log('EMPTTTY', element);
+        
         if(params[index+1])
         {
           request_details['body'] = params[index+1];
-          continue;
+          console.log('EMPTTTY', element, params[index+1]);
+          
         }
       }
   });
