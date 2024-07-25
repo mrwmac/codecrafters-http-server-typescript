@@ -31,7 +31,7 @@ const server = net.createServer((socket) => {
           socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${endpoint.length}\r\n\r\n${endpoint}`));
         }
         else if(path == '/user-agent')
-        {          console.log('user agent', user_agent)
+        {
           socket.write(Buffer.from(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${user_agent[1].length}\r\n\r\n${user_agent[1]}`));
         }
         else if(/^\/files\//.test(path))
@@ -96,7 +96,8 @@ function getParams(data)
         request_details['host'] = element.split(' ')[1];       
       } 
       else if(/^User-Agent: /.test(element))
-      {        
+      {     
+        console.log(element, element.split(' ')[1], 'split')   
         request_details['user_agent'] = element.split(' ')[1];
       } 
       else if(/^Accept: /.test(element))
